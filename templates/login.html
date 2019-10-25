@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>login</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+  <script src="/static/js/jquery-1.11.3.js"></script>
+</head>
+<body>
+<div>
+    {% block head %}
+    <h1 id="welcome">欢迎登录</h1>
+    {% endblock %}
+    <!-- 登录框 -->
+    <div id="main">
+        <div class="form">
+            {% block register %}
+            <form action={% url 'login' %} method="post">
+            {% csrf_token %}
+                <p class="p1">账户登录</p>
+                <p>登录名:<input type="text" name="loginname" style="width:200px" value="{{ loginname}}"></p>
+                <p>密&nbsp&nbsp&nbsp码:<input type="password" name="pwd" style="width:200px" value="{{ pwd }}"></p>
+                <p>{{ error }}</p>
+                <p><input type="checkbox" name="rmbpwd">记住密码<span>&nbsp&nbsp&nbsp<a href="#">忘记密码？</a></span></p>
+                <p><button type="submit">登陆</button>&nbsp&nbsp&nbsp<button ><a href={% url "reg" %}>注册</a></button></p>
+
+            </form>
+            {% endblock %}
+        </div>
+
+
+    </div>
+
+</div>
+<!-- 尾部信息 -->
+<div id="end">
+    <p><span><a href="#">关于我们</a></span><span><a href="#">合作伙伴</a></span></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+#index{
+    background-color:#f9f2f4;
+}
+#flag1{
+    background-color:#46b8da;
+    line-height: 50px;
+}
+
+#flag1 [class*="col-xs-8"]{
+    text-align: right;
+    line-height: 50px;
+}
+
+#flag2{
+      background-color:#c7ddef;
+      line-height: 30px;
+}
+
+#flag3 [class*='col-xs-8']{
+    padding: 0;
+
+}
+
+#flag4 [class*='col-xs-12']{
+    padding: 0;
+
+}
+
+#notice{
+    padding: 5px;
+    border:1px #101010 solid ;
+    overflow: auto;
+    background-color: #c7ddef;
+}
+.card{
+    margin-top: 3px;
+    padding: 5px ;
+    border: blueviolet 1px solid;
+}
+#link{
+    border: #0f0f0f 1px solid;
+    height: 500px;
+}
+#flag5{
+    text-align: center;
+    background-color: white;
+    border:solid black 1px;
+    line-height: 30px;
+}
+
+

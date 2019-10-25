@@ -1,0 +1,40 @@
+
+
+<div id="row1" class="row">
+    <div id="left"  class="col-xs-2 col-md-2">
+        {{ topic.user }}
+        <span id="topic_id" style="display: none">{{ topic.id }}</span>
+    </div>
+    <div id="right1" class="col-xs-10 col-md-10" style="border-left: silver solid 1px ">
+        <p>
+            {{ topic.content }}
+        </p>
+        <br>
+        <p style="text-align: right">
+            {{ topic.publishtime }}
+             <span class="reply"><a href="#">回复</a></span>
+        </p>
+        <p><textarea  class="form-control"  rows="3" name="content" id="reply"></textarea></p>
+    </div>
+</div>
+
+
+html='<div id="row1" class="row"><div id="left"  class="col-xs-2 col-md-2">'
+html+={{ topic.user }}
+html+='<span id="topic_id" style="display: none">'
+html+={{ topic.id }}
+html+='</span></div><div id="right1" class="col-xs-10 col-md-10" style="border-left: silver solid 1px "><p>'
+html+={{ topic.content }}
+html+='</p><br><p style="text-align: right">'
+html+={{ topic.publishtime }}
+html+='<span class="reply"><a href="#">回复</a></span></p><p><textarea  class="form-control"  rows="3" name="content" id="reply"></textarea></p></div></div>'
+
+
+
+var html='<p>'
+html+={{ comment.comment_text }}
+html+='</p><br><p style="text-align: right">'
+html+={{ comment.comment_time }}
+html+='<span class="reply" ><a>回复</a></span></p><div class="replyp"><textarea  class="form-control"  rows="3" name="content" id="reply"></textarea>
+<p style="text-align: right"><button type="button" class="commentrp">提交</button></p>
+</div>'

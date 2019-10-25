@@ -1,0 +1,48 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta http-equiv="x-ua-compatible" content="IE=edge">#}
+{#    <meta name="viewport" content="width=device-width,initial-scale=1">#}
+{#    <title>首页</title>#}
+{#    <link rel="stylesheet" href="/static/css/bootstrap.min.css">#}
+{#    <script src="/static/js/jquery-1.11.3.js"></script>#}
+{#    <script src="/static/js/bootstrap.min.js"></script>#}
+{#    <link rel="stylesheet" href="/static/css/index.css">#}
+{##}
+{#</head>#}
+{#<body>#}
+
+
+{#    <!--导航栏-->#}
+{#    <div class="container" id="story_text">#}
+{#        <div class="row" id="flag1">#}
+{#            <div class="col-xs-8 col-md-8">Homeboy社区</div>#}
+{#            <div class="col-xs-4 col-md-4">登陆|注册</div>#}
+{#        </div>#}
+{#        <div class="row" id="flag2">#}
+{#            <div class="col-xs-4 col-md-2"><a href={% url "music" %}>音乐</a></div>#}
+{#            <div class="col-xs-4 col-md-2"><a href={% url "story" %}>小说</a></div>#}
+{#            <div class="col-xs-4 col-md-2">美图</div>#}
+{#            <div class="col-xs-4 col-md-2">今日好价</div>#}
+{#            <div class="col-xs-4 col-md-2"><a href={% url "sport" %}>赛事直播</a></div>#}
+{#            <div class="col-xs-4 col-md-2">帖子发表</div>#}
+{#        </div>#}
+{#        <br>#}
+{% extends 'index.html' %}
+{% block diff %}
+    <div class="container" id="story_text" style="background: url('/static/images/timg.jpg');background-size: contain">
+        {% for line in text %}
+        <p>{{ line }}</p>
+        {% endfor %}
+        <br><br>
+        <div class="row">
+            <div class="col-xs-6 col-md-6" style="text-align: center"><a href="/story_text/?path={{ path }}&id={{ dir_id }}&flag=pre"><h4>《《上一章</h4></a></div>
+            <div class="col-xs-6 col-md-6" style="text-align: center"><a href="/story_text/?path={{ path }}&id={{ dir_id }}&flag=next"><h4>下一章》》</h4></a></div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{#</body>#}
+{#</html>#}

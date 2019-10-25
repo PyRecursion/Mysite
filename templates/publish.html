@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% block diff %}
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-8 column">
+                <form id="postForm" role="form" action="/publish/" method="post" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">主题</label>
+                        <input type="text" class="form-control" id="title" name="title"
+                               placeholder="请输入标题">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputfile">图片输入</label>
+                        <input type="file" id="inputfile" name="image" >
+                    </div>
+                    <div class="form-group">
+                        <label for="name">文本框</label>
+                        <textarea class="form-control" rows="10" name="content" id="content"></textarea>
+                    </div>
+                    <button id="button" type="button" class="btn btn-default">提交</button>
+                </form>
+            </div>
+
+            <script>
+
+                $(function () {
+                    $("#button").click(function () {
+                        var formData=new FormData(document.getElementById("postForm"));
+                        {#var formData=new FormData();#}
+                        {#var file_obj = document.getElementById("inputfile").files[0];//需要使用dom元素#}
+                        {#formData.append("content",$("#content").val());#}
+                        {#formData.append("title",$("#title").val());#}
+                        $.ajax({
+                            url:"/publish/",
+                            data:formData,
+                            type:"POST",
+                            dataType:"json",//dataType设置你收到服务器数据的格式
+                            contentType:false,//contentType 主要设置你发送给服务器的格式
+                            processData:false, //是否序列化数据
+                            success:function (backdata) {
+                               alert("上传成功");},
+                            error:function (){
+                             alert("上传失败")
+                            }
+                        })
+                    })
+                })
+            </script>
+
+            <div class="col-md-4 column">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="thumbnail">
+                            <img alt="300x200" src="v3/default4.jpg" />
+                            <div class="caption">
+                                <h3>
+                                    Thumbnail label
+                                </h3>
+                                <p>
+                                    Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+                                </p>
+                                <p>
+                                     <a class="btn btn-primary" href="#">Action</a> <a class="btn" href="#">Action</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="thumbnail">
+                            <img alt="300x200" src="v3/default6.jpg" />
+                            <div class="caption">
+                                <h3>
+                                    Thumbnail label
+                                </h3>
+                                <p>
+                                    Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
+                                </p>
+                                <p>
+                                     <a class="btn btn-primary" href="#">Action</a> <a class="btn" href="#">Action</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="jumbotron">
+                    <h1>
+                        Hello, world!
+                    </h1>
+                    <p>
+                        This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
+                    </p>
+                    <p>
+                         <a class="btn btn-primary btn-large" href="#">Learn more</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+

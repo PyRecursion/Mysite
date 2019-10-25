@@ -1,0 +1,254 @@
+{% extends 'index.html' %}
+{% block diff %}
+<style>
+#left{
+    text-align: center;
+}
+
+
+.row{
+    display: flex;
+    align-items: center;
+    border-bottom: silver solid 1px;
+}
+
+#container1{
+    border: silver solid 1px;
+    overflow: hidden;
+}
+
+.replyp{
+   display: none ;
+}
+
+.replybox{
+
+}
+
+</style>
+    <div class="container" id="container1">
+        <div id="row1" class="row">
+            <div id="left"  class="col-xs-2 col-md-2">
+                {{ topic.user }}
+                <span id="topicid" >{{ topic.id }}</span>
+            </div>
+            <div id="right1" class="col-xs-10 col-md-10" style="border-left: silver solid 1px ">
+                <h3>
+                    {{ topic.title }}
+                </h3>
+                <p>
+                    {{ topic.content }}
+                </p>
+                <div id="imagebox" >
+                    {% for img in images %}
+                        <img id=" image" class="image" src="/{{ img.images }}" height="300px" >
+                    {% endfor %}
+                </div>
+                <br>
+{#                <p style="text-align: right">#}
+{#                    {{ topic.publishtime }}#}
+{#                    <span class="reply" ><a>回复</a></span>#}
+{#                </p>#}
+{#                <div class="replyp"><textarea class="form-control"  rows="3" name="content" id="reply"></textarea>#}
+{#                    <p style="text-align: right"><button type="button" class="commentrp">提交</button></p>#}
+{#                </div>#}
+            </div>
+        </div>
+        {% for comment,replys in comment_replys  %}
+        <div id={{ comment.id }} class="row">
+            <div id="left"  class="col-xs-2 col-md-2">
+                {{ comment.topic.user.name }}
+                <span id="topic_id" style="display: none">{{ topic.id }}</span>
+            </div>
+            <div id="commentbox" class="col-xs-10 col-md-10" style="border-left: silver solid 1px ">
+                <div >
+                    <p>
+                        {{ comment.comment_text }}
+                    </p>
+                    <p style="text-align: right">
+                        {{ comment.comment_time }}
+                        <span class="reply" ><a>回复</a></span>
+                    </p>
+                    <div class="replyp"><textarea  class="form-control"  rows="1" name="content" id="reply"></textarea>
+                        <p style="text-align: right"><button type="button" class="commentrp">提交</button></p>
+                    </div>
+                </div>
+
+                <!--回复-->
+                {% for reply in replys %}
+                <div id={{ reply.id }}>
+                    <p>
+                        {{ reply.from_uid.name }}  回复  {{ comment.comment_userid.name }} : {{ reply.reply_content}}
+                    </p>
+                    <p style="text-align: right">
+                        {{ reply.reply_datetime }}
+                        <span class="reply" ><a>回复</a></span>
+                    </p>
+                    <div class="replyp"><textarea  class="form-control"  rows="1" name="content" id="reply"></textarea>
+                        <p style="text-align: right"><button type="button" class="replyrp">提交</button></p>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!--评论-->
+    <div class="container">
+        <form id="postForm" role="form" action="/publish/" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">评论</label>
+                <textarea style="display: block" class="form-control" rows="3" name="content" id="comment"></textarea>
+            </div>
+            <button id="button" type="button" class="btn btn-default">提交</button>
+        </form>
+    </div>
+<script>
+
+
+function imagehander(){
+    arr=$(".image");
+    $.each(arr,function (index,obj) {
+        {#console.log(obj);#}
+        var srcheight=obj.height;
+        var srcwidth=obj.width;
+        var wheight=window.screen.height;
+        var wweith=window.screen.width;
+        {#console.log(wheight,wweith);#}
+        newimgheight=75/srcwidth*srcheight;
+        {#console.log(newimgheight);#}
+        if(wweith<1000){
+            $(obj).css({"width":"75px",
+            "height":newimgheight+"px"})
+        }
+    });
+}
+
+function comment() {
+    $("#button").click(function () {
+
+        $.ajax({
+            url: "/comment/",
+            data: {"comment": $("#comment").val(), "topic_id": $("#topicid").text()},
+            type: "POST",
+            dataType: "json",//dataType设置你收到服务器数据的格式
+            {#contentType:false,//contentType 主要设置你发送给服务器的格式#}
+            {#processData:false, //是否序列化数据#}
+            success: function (backdata) {
+                var html='<div id="row1" class="row"><div id="left"  class="col-xs-2 col-md-2">';
+                html+=backdata.uname;
+                html+='<span id="topic_id" style="display: none">';
+                html+=backdata.uid;
+                html+='</span></div><div id="right1" class="col-xs-10 col-md-10" style="border-left: silver solid 1px "><div><p>';
+                html+=$("#comment").val();
+                html+='</p><p style="text-align: right">';
+                html+=backdata.time;
+                html+='<span class="reply" ><a>回复</a></span>\n' +
+                    '                </p>\n' +
+                    '                <div class="replyp"><textarea  class="form-control"  rows="3" name="content" id="reply"></textarea>\n' +
+                    '                    <p style="text-align: right"><button type="button" class="commentrp">提交</button></p>\n' +
+                    '                </div></div></div></div>';
+                $("#container1").append(html);
+                reply();
+            },
+            error: function () {
+                alert("未知错误")
+            }
+        })
+
+    })
+}
+
+
+function reply(){
+    $(".reply").click(function (event) {
+        console.log($(event.target));
+    $(event.target).parent().parent().next().css("display","block");
+    })
+}
+
+function replysub(){
+    $(".commentrp").click(function (evevt) {
+        curelem=$(evevt.target).parent().parent().parent().parent().parent();
+        comment.id =curelem.attr("id");
+        replytext=$(evevt.target).parent().prev().val();
+        commentbox=$(evevt.target).parent().parent().parent().parent();
+
+        $.ajax({
+            url: "/reply/",
+            data: {"commentrpl": replytext, "comment_id": comment.id},
+            type: "POST",
+            dataType: "json",
+            success:function (backdata) {
+                var html='<div class="replybox"><p>';
+                    html+=backdata.from_name+"  回复  "+backdata.to_name+" : "+replytext;
+                    html+='</p><p style="text-align: right">';
+                    html+=backdata.time;
+                    html+='<span class="reply" ><a>回复</a></span></p><div class="replyp"><textarea  class="form-control"  rows="3" name="content" id="reply"></textarea>\n'+
+                    '<p style="text-align: right"><button type="button" class="replyrp">提交</button></p></div></div>';
+                commentbox.append(html);
+                reply();
+                replysub()
+            },
+            error:function () {
+                alert("请登录")
+
+            }
+
+        });
+        $(event.target).parent().parent().css("display","none");
+
+    })
+}
+
+
+function rereplysub(){
+    $(".replyrp").click(function (evevt) {
+        curelem=$(evevt.target).parent().parent().parent();
+        reply_id=curelem.attr("id");
+        console.log(reply_id);
+        replytext=$(evevt.target).parent().prev().val();
+        console.log($(evevt.target).parent().prev().val());
+        commentbox=$(evevt.target).parent().parent().parent().parent();
+        $.ajax({
+            url: "/rreply/",
+            data: {"replyrpl": replytext, "reply_id": reply_id,},
+            type: "POST",
+            dataType: "json",
+            success:function (backdata) {
+                var html='<div class="replybox"><p>';
+                    html+=backdata.from_name+"  回复  "+backdata.to_name+" : "+replytext;
+                    html+='</p><p style="text-align: right">';
+                    html+=backdata.time;
+                    html+='<span class="reply" ><a>回复</a></span></p><div class="replyp"><textarea  class="form-control"  rows="1" name="content" id="reply"></textarea>\n'+
+                    '<p style="text-align: right"><button type="button" class="replyrp">提交</button></p></div></div>';
+                commentbox.append(html);
+                reply();
+                replysub();
+                rereplysub();
+            },
+            error:function () {
+                alert("请登录")
+            }
+
+        });
+        $(event.target).parent().parent().css("display","none");
+
+    })
+}
+
+//初始化
+$(function () {
+    imagehander();
+    comment();
+    reply();
+    replysub();
+    rereplysub();
+})
+
+</script>
+{% endblock %}

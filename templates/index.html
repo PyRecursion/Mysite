@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>homeboy社区</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/index1.css">
+
+</head>
+<body>
+    <!--导航栏-->
+    <div class="container" id="index" >
+        <div class="row" id="flag1">
+            <div class="col-xs-4 col-md-4"><a href={% url "index" %}>Homeboy社区</a></div>
+            {% if uname %}
+                <div  class="col-xs-8 col-md-8" >欢迎,{{ uname }}&nbsp<a href={% url "logout" %}>退出登录</a>&nbsp|&nbsp<a href={% url "reg" %}>注册</a></div>
+            {% else %}
+                <div  class="col-xs-8 col-md-8"><a href={% url "login" %} >登陆</a>&nbsp|&nbsp<a href={% url "reg" %}>注册</a></div>
+            {% endif %}
+
+        </div>
+        <div class="row" id="flag2">
+            <div class="col-xs-4 col-md-2"><a href={% url "music" %}>音乐</a></div>
+            <div class="col-xs-4 col-md-2"><a href={% url "story" %}>小说</a></div>
+            <div class="col-xs-4 col-md-2">
+                <div class="dropdown">
+                    <button style="background-color: #c7ddef" type="button" class="btn dropdown-toggle" id="dropdownMenu1"
+                            data-toggle="dropdown">
+                        美图
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        {% for type in imgtypes %}
+                        <li role="presentation" >
+                            <a role="menuitem" tabindex="-1" href='/photo/?id={{ type.id }}'>{{ type.type }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-xs-4 col-md-2"><a href={% url "sport" %}>赛事直播</a></div>
+            <div class="col-xs-4 col-md-2">个人博客</div>
+            <div class="col-xs-4 col-md-2"><a href={% url "publish" %}>帖子发表</a></div>
+        </div>
+    </div>
+    <br>
+    <!--公告 轮播栏-->
+    <!--<div class="container">-->
+    {% block diff %}
+    <div class="container" style="background: url('/static/images/timg.jpg');background-size: contain">
+        <div class="row" id="flag3">
+            <div class="col-xs-8 col-md-8">
+                <!--轮播功能-->
+                <!--<img src="0ef43b73.jpg" class="img-responsive" width="100%" style="height: 300px" >-->
+                <div id="myCarousel" class="carousel slide">
+                    <!-- 轮播（Carousel）指标 -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- 轮播（Carousel）项目 -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="/static/images/banner1.jpg" class="img-responsive" width="100%" style="height: 300px" alt="First slide" >
+                            <div class="carousel-caption">标题 1</div>
+                        </div>
+                        <div class="item">
+                            <img src="/static/images/banner2.jpg" class="img-responsive" width="100%" style="height: 300px" alt="Second slide">
+                        </div>
+                        <div class="item">
+                            <img src="/static/images/banner3.jpg" class="img-responsive" width="100%" style="height: 300px" alt="Third slide">
+                        </div>
+                    </div>
+                    <!-- 轮播（Carousel）导航 -->
+                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+            <!-- 轮播函数 -->
+            <script>
+                $(function(){
+                    $('#myCarousel').carousel({
+                        interval: 2000
+                    });
+                    $("#myCarousel").carousel('cycle');
+                    })
+            </script>
+            <div class="col-xs-4 col-md-4">
+               <div id="notice" style="height: 300px;">
+                    <h4>社区公告</h4>
+                    <p>这是公告</p>
+                    <p>这是公告</p>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+             <div class="row" id="flag4">
+                <!--帖子栏-->
+                 <p>热门帖子</p>
+                 <div class="col-xs-12 col-md-8" >
+                     {% for topic,images in topic_img %}
+                     <div class="card">
+                        <div class="container-fluid">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <h4 class="media-heading">
+                                                    <a href="/content/?id={{ topic.id }}">{{ topic.title }}</a>
+                                                </h4> {{topic.content}}
+                                            </div>
+                                            {% for image in images %}
+                                             <a href="#" class="pull-left"><img src="/{{ image.images }}" class="media-object" width="100px" height="100px"/></a>
+                                            {% endfor %}
+                                        </div>
+                                        <p style="text-align: right"><span>发布人：{{ topic.user.name }}</span>  <span>回复数：</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                     </div>
+                     {% endfor %}
+                 </div>
+
+
+            <!--常用链接地址栏-->
+             <div class="col-md-4 hidden-xs">
+                 <div id="link">
+                     <table class="table">
+                        <thead>
+                          <tr>
+                            <th>常用网站链接</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>百度一下</td>
+                            <td>淘宝</td>
+                            <td>京东</td>
+                          </tr>
+                          <tr>
+                            <td>优酷视频</td>
+                            <td>爱奇艺</td>
+                            <td>腾讯视频</td>
+                          </tr>
+                          <tr>
+                            <td>csdn</td>
+                            <td>Wcschool</td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    {% endblock %}
+
+    <br>
+    <!--end-->
+    <footer style="text-align: center">
+          <p> 联系我们 QQ 454661578@qq.com</p>
+
+    </footer>
+
+</body>
+
+
+</html>

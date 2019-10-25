@@ -1,0 +1,95 @@
+{% extends 'login.html' %}
+{% block head %}
+    <h1 id="welcome">注册</h1>
+    {% endblock %}
+{% block register %}
+    <form action="/reg/" method="post">
+    {% csrf_token %}
+        <p class="p1">账户注册</p>
+        <p>登录名:<input id="loginname" type="text" name="loginname" style="width:200px"></p>
+        <p id="show" flag="0" style="margin: 0 10px"></p>
+        <p>昵&nbsp&nbsp&nbsp称:<input id="name" type="text" name="name" style="width:200px"></p>
+        <p id="show1" flag="0" style="margin:0 10px " ></p>
+        <p>密&nbsp&nbsp&nbsp码:<input id="upwd" type="password" style="width:200px" name="pwd"></p>
+        <p>确认密码:<input id="ckpwd" type="password" style="width:200px" name="pwd"></p>
+        <p id="show2" flag="0" ></p>
+
+        <p><button type="button" id="button" >注册并登录</button></p>
+    </form>
+
+    <script>
+    $(function () {
+        //登录名验证
+            $('#loginname').blur( function () {
+            var url="/reg/?ck1="+$(this).val();
+            if  ($(this).val()==''){
+                $('#show').css("color","red").text("登陆名不能为空");
+                $('#show').attr("flag","0")
+            }else {
+            $.get(url,
+            function (resdata) {
+                console.log(resdata);
+                if (resdata.flag==0){
+                    $('#show').css("color","red").text("用户名已存在");
+                    $('#show').attr("flag","0")
+                }else {
+                    $('#show').css("color","green").text("用户名可用");
+                    $('#show').attr("flag","1")
+                }
+            },'json')
+            }
+        });
+            //昵称验证
+            $('#name').blur( function () {
+            var url="/reg/?ck2="+$(this).val();
+            if  ($(this).val()==''){
+                $('#show1').css("color","red").text("昵称不能为空");
+                $('#show1').attr("flag","0")
+            }else {
+            $.get(url,
+            function (resdata) {
+                console.log(resdata);
+                if (resdata.flag==0){
+                    $('#show1').css("color","red").text("昵称已存在");
+                    $('#show1').attr("flag","0")
+                }else {
+                    $('#show1').css("color","green").text("昵称可用");
+                    $('#show1').attr("flag","1")
+                }
+            },'json')
+            }
+        });
+            //密码验证
+            $('#ckpwd').blur(function () {
+
+                if ($(this).val()===''){
+                    $('#show2').css("color","red").text("密码不能为空");
+                    $('#show2').attr("flag","0")}
+                else {
+                    if ($(this).val()===$("#upwd").val()){
+                        $('#show2').text("");
+                        $('#show2').attr("flag","1");
+
+                    }else {
+                        $('#show2').css("color","red").text("两次密码不一致")
+                        $('#show2').attr("flag","0")
+                    }
+            }});
+            //提交验证
+            $("#button").click(function () {
+                var show=$('#show').attr("flag");
+                var show1=$('#show1').attr("flag");
+                var show2=$('#show2').attr("flag");
+                if (show==="1" && show1==="1" && show2==="1"){
+                    $(this).attr("type","submit");
+                } else {
+                    alert("信息有误，请修改")
+                }
+
+            })
+
+    })
+
+
+    </script>
+{% endblock %}

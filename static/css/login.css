@@ -1,0 +1,56 @@
+
+body{
+	/*字体样式*/
+	font : 14px "Microsoft Yahei","黑体",sans-serif;
+	margin: 0;
+	padding: 0;
+
+}
+
+/*body,h1,h2,h3,h4,h5,h6,p,ul,ol{*/
+	/*margin:0;*/
+	/*padding:0;*/
+	/*list-style:none;*/
+/*}*/
+
+#welcome{
+	margin: 15px 15px;
+}
+
+
+#main{
+    position: relative;
+	width: 1920px;
+	height: 1200px;
+    background-image:url("/static/images/loginbg2.jpg");
+	background-size: 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+
+}
+
+#main .form{
+	width: 240px;
+	height: 600px;
+
+	position: absolute;
+	top: 40%;
+	right: 80%;
+}
+
+#main .form p{
+	float: left;
+	margin: 10px 10px ;
+}
+
+#main .form .p1{
+	float: left;
+}
+
+#end p{
+	text-align: center;
+}
+#end span{
+	padding: 15px;
+
+}

@@ -1,0 +1,52 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta http-equiv="x-ua-compatible" content="IE=edge">#}
+{#    <meta name="viewport" content="width=device-width,initial-scale=1">#}
+{#    <title>首页</title>#}
+{#    <link rel="stylesheet" href="/static/css/bootstrap.min.css">#}
+{#    <script src="/static/js/jquery-1.11.3.js"></script>#}
+{#    <script src="/static/js/bootstrap.min.js"></script>#}
+{#    <link rel="stylesheet" href="/static/css/index.css">#}
+{##}
+{#</head>#}
+{#<body>#}
+
+{##}
+{#    <!--导航栏-->#}
+{#    <div class="container" id="story_dir">#}
+{#        <div class="row" id="flag1">#}
+{#            <div class="col-xs-8 col-md-8">Homeboy社区</div>#}
+{#            <div class="col-xs-4 col-md-4">登陆|注册</div>#}
+{#        </div>#}
+{#        <div class="row" id="flag2">#}
+{#            <div class="col-xs-4 col-md-2"><a href={% url "music" %}>音乐</a></div>#}
+{#            <div class="col-xs-4 col-md-2"><a href={% url "story" %}>小说</a></div>#}
+{#            <div class="col-xs-4 col-md-2">美图</div>#}
+{#            <div class="col-xs-4 col-md-2">今日好价</div>#}
+{#            <div class="col-xs-4 col-md-2"><a href={% url "sport" %}>赛事直播</a></div>#}
+{#            <div class="col-xs-4 col-md-2">帖子发表</div>#}
+{#        </div>#}
+{#        <br>#}
+{% extends 'index.html' %}
+{% block diff %}
+    <div class="container" id="story_dir">
+        <div class="row">
+            {% for dir in dirs %}
+                <div class="col-xs-4 col-md-3" style="height: 50px"><a href="/story_text/?id={{ dir.id }}">{{ dir }}</a></div>
+            {% endfor %}
+        </div>
+
+        <ul class="pagination">
+            <li><a href="#">&laquo;</a></li>
+            {% for i in pages %}
+            <li ><a href="/story_dir/p{{ i|add:1 }}/?id={{ id }}">{{ i|add:1 }}</a></li>
+            {% endfor %}
+            <li><a href="#">&raquo;</a></li>
+
+        </ul>
+    </div>
+{% endblock %}
+{#</body>#}
+{#</html>#}
